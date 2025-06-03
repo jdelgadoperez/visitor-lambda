@@ -1,0 +1,18 @@
+{
+	"name": "visitor-lambda",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "esbuild src/handler.ts --bundle --platform=node --target=node18 --outfile=dist/index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.149",
+		"esbuild": "^0.25.5",
+		"typescript": "^5.8.3"
+	}
+}
