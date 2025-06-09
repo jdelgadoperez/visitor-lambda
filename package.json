@@ -4,10 +4,14 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "prebuild": "npm install",
         "build": "esbuild src/index.ts --bundle --platform=node --target=node18 --outfile=dist/index.js --external:aws-sdk --external:@aws-sdk/* --external:@nestjs/websockets --external:@nestjs/microservices --format=cjs",
+        "clean": "rm -rf node_modules",
         "test": "echo \"Error: no test specified\" && exit 1",
         "test:local": "node test-local.js",
-        "package": "npm run build && cp dist/index.js index.js && zip -r ../visitor-lambda.zip index.js node_modules dist-api",
+        "prepackage": "npm run build && npm run clean && npm install --production && cp dist/index.js index.js",
+        "package": "zip -r ../visitor-lambda.zip index.js node_modules dist-api",
+        "postpackage": "rm index.js && npm run build",
         "deploy:update": "npm run package && aws lambda update-function-code --function-name visitor-lambda --zip-file fileb://visitor-lambda.zip",
         "deploy:create": "npm run package && aws lambda create-function --function-name visitor-lambda --runtime nodejs18.x --role arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):role/lambda-execution-role --handler index.handler --zip-file fileb://visitor-lambda.zip"
     },
